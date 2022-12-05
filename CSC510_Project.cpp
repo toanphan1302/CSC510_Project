@@ -4,41 +4,54 @@
 #include <iostream>
 using namespace std;
 
-bool Login(string userInfo[numberOfUser][5], int numberOfUser);
-string UserInfo[5][5] = {
+bool Login();
+string UserInfo[100][5] = {
 	{"simpsoni", "abc123", "Isaiah", "123-456-7890", "123St"},
 	{"riverad", "123abc", "David", "234-567-8901", "123DR"},
 	{"fosterb", "abc321", "Brendan", "345-678-9012", "123RD"},
 	{"toanp", "123cba", "Toan", "456-789-0123", "123Ave"} };
-const int numberOfUser = sizeof(UserInfo) / sizeof(UserInfo[0]);
 
 int main() {
-	bool x;
 	while (true) 
 	{
 		//Print out options to choose from the user
 		cout << "0: Login\t1: Continue as guest\n2: View orders\n";
 		//Read in user input
-		int userInput = -1;
+		int userInput = 0;
 		cin >> userInput;
+
+		bool loginResult = false;
+		//Base on user input call the appropriate function
 		switch (userInput)
 		{
 		case 0:
+			loginResult = Login();
+			if (loginResult == true) {
+				//Call usef info function
+				int userInfoInput = 0; // function call here
+				switch (userInfoInput) {
+				case 1:
+					break;
+					//call ordering function here:
+				case 2:
+					break;
+				}
+			}
 			break;
 		case 1:
+			//call ordering function here:
 			break;
 		case 2:
 			break;
+
 		default:
 			break;
 		}
-		//Base on user input call the appropriate function
-		x = Login(UserInfo,numberOfUser);
-		cout << "Program End" << endl;
 	}
+	cout << "Program End" << endl;
 	return 0;
 }
-bool Login(string *userInfo, int numberOfUser)
+bool Login()
 {
 	bool SuccessfulLogin = false;
 	string username, password;
@@ -46,7 +59,7 @@ bool Login(string *userInfo, int numberOfUser)
 	cin >> username;
 	cout << "\nEnter Password: ";
 	cin >> password;
-	for (int i = 0; i < numberOfUser; i++)
+	for (int i = 0; i < sizeof(UserInfo) / sizeof(UserInfo[0]); i++)
 	{
 		string a, b;
 		string t = " ";
