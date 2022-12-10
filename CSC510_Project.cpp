@@ -5,11 +5,14 @@
 using namespace std;
 
 bool Login();
-string UserInfo[100][5] = {
+int UserInfo(string userInfoArray[5]);
+
+string UserInfoArray[100][5] = {
 	{"simpsoni", "abc123", "Isaiah", "123-456-7890", "123St"},
 	{"riverad", "123abc", "David", "234-567-8901", "123DR"},
 	{"fosterb", "abc321", "Brendan", "345-678-9012", "123RD"},
 	{"toanp", "123cba", "Toan", "456-789-0123", "123Ave"} };
+string LoggedInUser[5]{};
 
 int main() {
 	while (true) 
@@ -28,7 +31,7 @@ int main() {
 			loginResult = Login();
 			if (loginResult == true) {
 				//Call usef info function
-				int userInfoInput = 0; // function call here
+				int userInfoInput = UserInfo(LoggedInUser); // function call here
 				switch (userInfoInput) {
 				case 1:
 					break;
@@ -41,10 +44,8 @@ int main() {
 		case 1:
 			//call ordering function here:
 			break;
-		case 2:
-			break;
-
 		default:
+			cout << "Invalid input";
 			break;
 		}
 	}
@@ -59,7 +60,7 @@ bool Login()
 	cin >> username;
 	cout << "\nEnter Password: ";
 	cin >> password;
-	for (int i = 0; i < sizeof(UserInfo) / sizeof(UserInfo[0]); i++)
+	for (int i = 0; i < sizeof(UserInfoArray) / sizeof(UserInfoArray[0]); i++)
 	{
 		string a, b;
 		string t = " ";
@@ -67,16 +68,20 @@ bool Login()
 		{
 			if (a == username)
 			{
-				b = UserInfo[i][j];
+				b = UserInfoArray[i][j];
 				if (b == password)
 				{
-					cout << "You are now logged in as: " << UserInfo[i][2] << endl;
+					cout << "You are now logged in as: " << UserInfoArray[i][2] << endl;
+					//Set LoggedInUser
+					for (int k = 0; k < 5; k++) {
+						LoggedInUser[k] = UserInfoArray[i][k];
+					}
 					return true;
 				}
 			}
 			else
 			{
-				a = UserInfo[i][j];
+				a = UserInfoArray[i][j];
 				t = a;
 			}
 		}
@@ -84,4 +89,26 @@ bool Login()
 	cout << "Incorrect Username or Password." << endl;
 	cout << "Try again." << endl;
 	return false;
+}
+int UserInfo(string userInfoArray[5]) {
+	while (true) {
+		cout << "0: Show Infomation\t1: Order\n2: Back to home\n";
+		int userInput = -1;
+		cin >> userInput;
+		switch (userInput)
+		{
+		case 0:
+			cout << "Username:\t" << userInfoArray[0] << endl;
+			cout << "Name:\t" << userInfoArray[2] << endl;
+			cout << "Phone Number:\t" << userInfoArray[3] << endl;
+			cout << "Address:\t" << userInfoArray[4] << endl;
+			break;
+		case 1:
+			return 1;
+		case 2:
+			return 2;
+		default:
+			cout << "Invalid input" << endl;
+		}
+	}
 }
