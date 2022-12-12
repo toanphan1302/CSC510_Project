@@ -4,9 +4,129 @@
 #include <iostream>
 using namespace std;
 
+class Pizza {
+public:
+	int size;
+	string toppings;
+	Pizza(int x, string y) {
+		//cout << "Creating pizza with your custom settings..." << endl;
+		size = x;
+		toppings = y;
+	}
+	Pizza() {
+		size = 0;
+		toppings = "";
+	}
+
+	static void PrintPizza(int size, string toppings) {
+		string mySize;
+		if (size == 0) {
+			mySize = "Medium";
+		}
+		else if (size == 1)
+		{
+			mySize = "Large";
+		}
+		cout << "Size: " << mySize << endl;
+		cout << "Toppings: " << toppings << endl;
+	}
+
+	void PizzaMaker()
+	{
+		cout << "Creating pizza with your custom settings..." << endl;
+		int orderCorrect = 2;
+		int mySize = 2;
+		string myToppings = "pizza with ";
+		string possibleToppings[5] = { "cheese", "tomato sauce", "pepperoni", "mushroom", "pineapple"
+		};
+		int toppingsBool = 2;
+		cout << "Welcome to the ordering page!" << endl;
+		cout << "Here you'll create the perfect pizza for you." << endl;
+		while (orderCorrect != 1)
+		{
+			mySize = 2;
+			cout << "First, let's choose how big you want your pizza to be." << endl;
+			while (mySize != 1 && mySize != 0)
+			{
+				cout << "Please enter 0 for a medium, or 1 for a large: ";
+				cin >> mySize;
+				if (mySize != 1 && mySize != 0)
+				{
+					cout << "Sorry, that input is invalid. Please try again." << endl;
+				}
+			}
+			myToppings = "pizza with ";
+			toppingsBool = 2;
+			cout << "Thank you! Now it's time to pick out your toppings." << endl;
+			for (int i = 0; i < 5; i++)
+			{
+				toppingsBool = 2;
+				while (toppingsBool != 1 && toppingsBool != 0)
+				{
+					cout << "Would you like " << possibleToppings[i] << " on your pizza? (0 for no, 1 for yes): ";
+					cin >> toppingsBool;
+					if (toppingsBool != 1 && toppingsBool != 0)
+					{
+						cout << "Sorry, that input is invalid. Please try again." << endl;
+					}
+					else
+					{
+						cout << "Thank you for your input!" << endl;
+						if (toppingsBool == 1)
+						{
+							myToppings = myToppings + possibleToppings[i] + ", ";
+						}
+					}
+				}
+			}
+			if (myToppings == "pizza with ")
+			{
+				myToppings = myToppings + "nothing, ";
+			}
+			myToppings = myToppings + "and made with love!";
+			orderCorrect = 2;
+			cout << "There's one more step - let's make sure you haven't changed your mind." <<
+				endl;
+			while (orderCorrect != 0 && orderCorrect != 1)
+			{
+				if (mySize == 0)
+				{
+					cout << "You want a medium ";
+				}
+				if (mySize == 1)
+				{
+					cout << "You want a large ";
+				}
+				cout << myToppings << endl;
+				cout << "Is this correct? (0 for no, 1 for yes): ";
+				cin >> orderCorrect;
+				if (orderCorrect != 1 && orderCorrect != 0)
+				{
+					cout << "Sorry, that input is invalid. Please try again." << endl;
+				}
+				else if (orderCorrect == 0)
+				{
+					cout << "OK, then, let's re-make your pizza then." << endl;
+				}
+				else if (orderCorrect == 1)
+				{
+					cout << "Great! Let's proceed to the checkout." << endl;
+				}
+			}
+		}
+		Pizza myPizza(mySize, myToppings);
+		size = mySize;
+		toppings = myToppings;
+		//return myPizza;
+	};
+};
+
+
+
 bool Login();
 int UserInfo(string userInfoArray[5]);
-
+Pizza PizzaOrder[100];
+int NumberOfPizza = 0;
 string UserInfoArray[100][5] = {
 	{"simpsoni", "abc123", "Isaiah", "123-456-7890", "123St"},
 	{"riverad", "123abc", "David", "234-567-8901", "123DR"},
@@ -22,6 +142,7 @@ int main() {
 		//Read in user input
 		int userInput = 0;
 		cin >> userInput;
+		Pizza newPizza(0, "");
 
 		bool loginResult = false;
 		//Base on user input call the appropriate function
@@ -34,18 +155,38 @@ int main() {
 				int userInfoInput = UserInfo(LoggedInUser); // function call here
 				switch (userInfoInput) {
 				case 1:
+					newPizza.PizzaMaker();
+					PizzaOrder[NumberOfPizza] = newPizza;
+					NumberOfPizza += 1;
 					break;
 					//call ordering function here:
+
 				case 2:
 					break;
 				}
 			}
 			break;
 		case 1:
-			//call ordering function here:
+			newPizza.PizzaMaker();
+			PizzaOrder[NumberOfPizza] = newPizza;
+			NumberOfPizza += 1;
 			break;
+
+		case 2:
+			if (NumberOfPizza <= 0) {
+				cout << "There is no order" << endl;
+			}
+			else
+			{
+				for (int i = 0; i < NumberOfPizza; i++) {
+					cout << "Pizza " << i + 1 << ":" << endl;
+					PizzaOrder[i].PrintPizza(PizzaOrder[i].size, PizzaOrder[i].toppings);
+				}
+			}
+			break;
+
 		default:
-			cout << "Invalid input";
+			cout << "Invalid input" << endl;
 			break;
 		}
 	}
@@ -112,3 +253,6 @@ int UserInfo(string userInfoArray[5]) {
 		}
 	}
 }
+
+
+
